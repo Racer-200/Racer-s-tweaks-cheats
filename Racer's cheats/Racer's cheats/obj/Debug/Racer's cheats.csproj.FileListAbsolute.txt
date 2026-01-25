@@ -1,7 +1,0 @@
-C:\Program Files (x86)\Steam\steamapps\common\My Winter Car\Mods\Racer's cheats.dll
-C:\Program Files (x86)\Steam\steamapps\common\My Winter Car\Mods\Racer's cheats.pdb
-C:\Users\popov\source\repos\Racer's cheats\Racer's cheats\obj\Debug\Racer's cheats.csproj.AssemblyReference.cache
-C:\Users\popov\source\repos\Racer's cheats\Racer's cheats\obj\Debug\Racer's cheats.csproj.CoreCompileInputs.cache
-C:\Users\popov\source\repos\Racer's cheats\Racer's cheats\obj\Debug\Racer's cheats.dll
-C:\Users\popov\source\repos\Racer's cheats\Racer's cheats\obj\Debug\Racer's cheats.pdb
-C:\Users\popov\source\repos\Racer's cheats\Racer's cheats\obj\Debug\Racer's .C003782B.Up2Date
