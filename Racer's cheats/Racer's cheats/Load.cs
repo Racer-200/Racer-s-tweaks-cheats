@@ -13,7 +13,7 @@ namespace Racer_s_cheats
     {
         public class Variable
         {
-            static public float ScrapPrice()
+            public static  float ScrapPrice()
             {
                 return GameObject.Find("Systems/ScrapPrice")
                     .GetComponent<PlayMakerFSM>()
@@ -31,7 +31,7 @@ namespace Racer_s_cheats
         {
             public class Cheat
             {
-               static public void Add_ScrapSeller()
+               public static void Add_ScrapSeller()
                 {
                     Racer_s_tweaks_cheats.CheatsMainObject
                         .AddComponent<ScrapSeller>();
@@ -40,16 +40,22 @@ namespace Racer_s_cheats
 
             public class Tweak
             {
-                static public void Add_GlassWithoutFrost()
+                public static void Add_GlassWithoutFrost()
                 {
                     Racer_s_tweaks_cheats.TweaksMainObject
                         .AddComponent<GlassWithoutFrost>();
                 }
 
-                static public void Add_NicerColorSelectedBolts()
+                public static void Add_NicerColorSelectedBolts()
                 {
                     Racer_s_tweaks_cheats.TweaksMainObject
                         .AddComponent<NicerColorSelectedBolts>();
+                }
+
+                public static void Add_DisableCarDeformation()
+                {
+                    Racer_s_tweaks_cheats.TweaksMainObject
+                        .AddComponent<DisableCarDeformation>();
                 }
             }
         }

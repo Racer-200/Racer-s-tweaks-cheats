@@ -73,6 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DisableCarDeformation.cs" />
     <Compile Include="NicerColorSelectedBolts.cs" />
     <Compile Include="GlassWithoutFrost.cs" />
     <Compile Include="Scrap.cs" />

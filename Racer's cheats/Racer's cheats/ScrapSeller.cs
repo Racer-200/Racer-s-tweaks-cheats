@@ -1,7 +1,5 @@
 ﻿using HutongGames.PlayMaker;
 using MSCLoader;
-using Steamworks;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -46,64 +44,57 @@ namespace Racer_s_cheats
 
 		private void TestBool()
 		{
-			if (Racer_s_tweaks_cheats.Keybind_SelectParts.GetKeybindDown())
-			{
-				if (!SelectBool)
-				{
-                    ModConsole.Log("Select mode enabled\n");
+			if (!Racer_s_tweaks_cheats.Keybind_SelectParts.GetKeybindDown())
+				return;
 
-                    SelectBool = true;
-                }
-				
-				else
-				{
-                    ModConsole.Log("Select mode disabled\n");
+			SelectBool = !SelectBool;
+			ResetSelection();
 
-                    SelectBool = false;
+			ModConsole.Log($"Select mode {(SelectBool ? "enabled" : "disabled")}");
+		}
 
-                    _selectedParts?.ForEach(v => v.OldColor());
-                    _selectedParts?.Clear();
-                }
-					
-			}
+		private void ResetSelection()
+		{
+			_selectedParts.ForEach(v => v?.OldColor());
+			_selectedParts.Clear();
 		}
 
 		private void CheckHit()
 		{
-			var scrap = _hitObj.Value.GetComponent<Scrap>();
+            var scrap = _hitObj.Value.GetComponent<Scrap>();
 
-			if (SelectBool)
-			{
-				if (!_selectedParts.Find(v => v == scrap) && scrap != null)
-				{
-                    _selectedParts.Add(scrap);
-                    scrap.LightUp();
-                }
-			}
+            if (
+				!SelectBool
+				|| scrap == null
+				|| _selectedParts.Contains(scrap)
+			) return;
+
+            _selectedParts.Add(scrap);
+            scrap.LightUp();
         }
 
 		private void CheckSell()
 		{
-			if (Racer_s_tweaks_cheats.keybind_SellParts.GetKeybindDown())
-			{
-				if (SelectBool && _selectedParts.Count > 0)
-				{
-					var mass = GetAllMass(_selectedParts);
-					var earnedMoney = mass * _scrapPrice;
+			if (
+				!Racer_s_tweaks_cheats.keybind_SellParts.GetKeybindDown()
+				|| !SelectBool
+				|| _selectedParts.Count == 0
+			) return;
 
-					Garbage();
+			var mass = GetAllMass(_selectedParts);
+			var earnedMoney = mass * _scrapPrice;
 
-					Racer_s_tweaks_cheats.PlayerMoney.Value += earnedMoney;
+            Garbage();
 
-					AudioSource.PlayClipAtPoint(_audioCash, Racer_s_tweaks_cheats.PlayerTrns.position);
+            Racer_s_tweaks_cheats.PlayerMoney.Value += earnedMoney;
 
-					ModConsole.Log($"You sold scrap of mass is {mass}kg." +
-						$"\nThe scrap price per kg is {_scrapPrice}MK." +
-						$"\nYou earned {earnedMoney}MK.\n"
-					);
-                }
-			}
-		}
+            AudioSource.PlayClipAtPoint(_audioCash, Racer_s_tweaks_cheats.PlayerTrns.position);
+
+            ModConsole.Log($"You sold scrap of mass is {mass}kg." +
+                $"\nThe scrap price per kg is {_scrapPrice}MK." +
+                $"\nYou earned {earnedMoney}MK.\n"
+            );
+        }
 
 		private void Garbage()
 		{

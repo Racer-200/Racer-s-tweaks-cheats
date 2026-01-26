@@ -10,31 +10,43 @@ namespace Racer_s_cheats
         public override string ID => "Racer_s_cheats"; // Your (unique) mod ID 
         public override string Name => "Racer's tweaks & cheats"; // Your mod name
         public override string Author => "@racer"; // Name of the Author (your name)
-        public override string Version => "0.2.0"; // Version
+        public override string Version => "0.2.1"; // Version
         public override string Description => "Cheats that make life easier in this damned game."; // Short description of your mod 
         public override Game SupportedGames => Game.MyWinterCar;
 
-        static public GameObject[] AllObjects, AllPrefabs, AllParts;
+        public static GameObject[]
+            AllObjects,
+            AllPrefabs,
+            AllParts;
 
-        static public Material[] AllMat;
+        public static Material[] AllMat;
 
-        static public AudioClip[] AllSounds;
+        public static AudioClip[] AllSounds;
 
-        static public GameObject ModMainObject, CheatsMainObject, TweaksMainObject;
+        public static Deformable[] AllDeformable;
 
-        static public Transform PlayerTrns;
+        public static GameObject 
+            ModMainObject,
+            CheatsMainObject,
+            TweaksMainObject;
 
-        static public Material BoltActiveMat;
+        public static Transform PlayerTrns;
 
-        static public Material SelectedPartMat;
+        public static Material BoltActiveMat;
 
-        static public Color ColorSelectPart;
+        public static Material SelectedPartMat;
 
-        static public SettingsKeybind Keybind_SelectParts, keybind_SellParts;
+        public static Color ColorSelectPart;
 
-        static public SettingsCheckBox ScrapSellerCheat, WithoutFrostedGlass, NicerColorSelectedBolts; 
+        public static SettingsKeybind Keybind_SelectParts, keybind_SellParts;
 
-        static public FsmFloat PlayerMoney;
+        public static SettingsCheckBox
+            ScrapSellerCheat,
+            WithoutFrostedGlass,
+            NicerColorSelectedBolts,
+            DisableDeformLogic;
+
+        public static FsmFloat PlayerMoney;
 
         public override void ModSetup()
         {
@@ -70,14 +82,20 @@ namespace Racer_s_cheats
                     value: false
                 );
 
+            DisableDeformLogic = Settings
+                .AddCheckBox("Tweak_DisableDeformLogic",
+                    "Disable Car Deformation",
+                    value: false
+                );
 
-            Keybind.AddHeader("Hotkeys of cheats");
+
+            Keybind.AddHeader("Hotkeys For ScrapSeller");
 
             Keybind_SelectParts = Keybind
-                .Add("Cheat_ScrapSeller_SelectPartsID", "Select parts for ScrapSeller", KeyCode.RightAlt);
+                .Add("Cheat_ScrapSeller_SelectPartsID", "Select Parts", KeyCode.RightAlt);
 
             keybind_SellParts = Keybind
-                .Add("CheatScrap_ScrapSeller_SellId", "Sell selected parts", KeyCode.Return);
+                .Add("CheatScrap_ScrapSeller_SellId", "Sell Selected Parts", KeyCode.Return);
 
         }
 
@@ -101,6 +119,8 @@ namespace Racer_s_cheats
             AllMat = Load.Variable.GetAllObjects<Material>();
 
             AllSounds = Load.Variable.GetAllObjects<AudioClip>();
+
+            AllDeformable = Load.Variable.GetAllObjects<Deformable>();
 
             BoltActiveMat = AllMat
                 .Where(v => v.name == "activebolt")
@@ -153,10 +173,8 @@ namespace Racer_s_cheats
                     }
                 }
 
-                ModConsole.Log("The \"ScrapSeller\" is loaded\n");
+                LoadLog("ScrapSeller");
             }
-
-            ModConsole.Log("All cheats is loaded\n");
         }
 
         private void Tweaks()
@@ -165,17 +183,29 @@ namespace Racer_s_cheats
             {
                 Load.Component.Tweak.Add_GlassWithoutFrost();
 
-                ModConsole.Log("The \"WithoutFtostedGlass\" is loaded\n");
+                LoadLog("WithoutFtostedGlass");
             }
 
             if (NicerColorSelectedBolts.GetValue())
             {
                 Load.Component.Tweak.Add_NicerColorSelectedBolts();
 
-                ModConsole.Log("The \"NicerColorSelectedBolts\" is loaded\n");
+                LoadLog("NicerColorSelectedBolts");
             }
 
-            ModConsole.Log("All tweaks is loaded\n\n");
+            if (DisableDeformLogic.GetValue())
+            {
+                Load.Component.Tweak.Add_DisableCarDeformation();
+
+                LoadLog("DisableCarDeformation");
+            }
+
+            ModConsole.Log("\n\n");
+        }
+
+        private void LoadLog(string nameComponent)
+        {
+            ModConsole.Log($"The \"{nameComponent}\" is loaded\n");
         }
     }
 }
